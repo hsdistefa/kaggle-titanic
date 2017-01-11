@@ -106,35 +106,35 @@ x_test = full[891:].drop(['Survived'], axis=1)
 
 logreg = LogisticRegression()
 logreg.fit(x_train, y_train)
-y_pred_logreg = logreg.predict(x_test)
+y_pred_logreg = logreg.predict(x_test).astype(int)
 print('logreg score: ' + str(logreg.score(x_train, y_train)))
 
 
 # Support Vector Machines
 svc = SVC()
 svc.fit(x_train, y_train)
-y_pred_svm = svc.predict(x_test)
+y_pred_svm = svc.predict(x_test).astype(int)
 print('svm score: ' + str(svc.score(x_train, y_train)))
 
 
 # KNN
 knn = KNeighborsClassifier(n_neighbors=3)
 knn.fit(x_train, y_train)
-y_pred_knn = knn.predict(x_test)
+y_pred_knn = knn.predict(x_test).astype(int)
 print('knn score: ' + str(knn.score(x_train, y_train)))
 
 
 # Guassian Naive Bayes
 gnb = GaussianNB()
 gnb.fit(x_train, y_train)
-y_pred_gnb = gnb.predict(x_test)
+y_pred_gnb = gnb.predict(x_test).astype(int)
 print('gnb score: ' + str(gnb.score(x_train, y_train)))
 
 
 # Random Forest
 rf = RandomForestClassifier(n_estimators=100)
 rf.fit(x_train, y_train)
-y_pred_rf = rf.predict(x_test)
+y_pred_rf = rf.predict(x_test).astype(int)
 print('rf score: ' + str(rf.score(x_train, y_train)))
 
 
@@ -143,3 +143,10 @@ coeff_df = pd.DataFrame(x_train.columns)
 coeff_df.columns = ['Features']
 coeff_df['Coefficient Estimate'] = pd.Series(logreg.coef_[0])
 print(coeff_df)
+
+
+# Generate kaggle submission
+submission = pd.DataFrame({
+    'PassengerId': test_df['PassengerId'],
+    'Survived': y_pred_rf})
+
